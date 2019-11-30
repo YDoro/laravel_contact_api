@@ -119,8 +119,11 @@ class ContactController extends Controller
 
     public function destroy($id)
     {
-        //TODO -  verify if the logged user is the owner of the selected contact
-        $contact =  Contact::findOrFail($id);
+        $contact =  Contact::all()
+                            ->where('id',$id)
+                            ->where('user_id',Auth::user()->id)
+                            ->first();
+        if(!$contact)return response()->json(['error' => 'Contact not found!'], 401);
         $contact->delete();
     }
 }
