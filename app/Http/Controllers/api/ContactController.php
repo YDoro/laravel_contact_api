@@ -81,8 +81,11 @@ class ContactController extends Controller
 
     public function show($id)
     {
-        //TODO -  verify if the logged user is the owner of the selected contact
-        return Contact::findOrFail($id);
+        $contact =  Contact::all()
+                            ->where('id',$id)
+                            ->where('user_id',Auth::user()->id)
+                            ->first();
+        return $contact;
     }
 
 
