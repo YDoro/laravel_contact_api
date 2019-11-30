@@ -7,6 +7,9 @@
 ## Installation
 
 > Clone this project and then do a `composer install `
+> After `composer install ` peform a `php artisan key:generate`
+> And then `php artisan passport:client --personal`
+> Name the personal access client of `contacts_api`
 ## Insomnia REST Client File
 >You can import the `contacts_api_endpoints.json` located on the root of the project into your insomnia REST client to import all API endpoints bellow at once
 ## API ENDPOINTS
