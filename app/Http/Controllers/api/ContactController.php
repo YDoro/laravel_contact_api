@@ -91,9 +91,30 @@ class ContactController extends Controller
 
     public function update(Request $request, $id)
     {
-        //TODO -  verify if the logged user is the owner of the selected contact
-        $contact =  Contact::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|between:6,60',
+            'email' => 'nullable|email',
+            'address' => 'nullable',
+            'CEP' => 'size:10',
+            'phone' => 'min:14|max:15'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        if (!self::CEPValidator($request->input('CEP'))) {
+            return response()->json(['error' => 'invalid CEP'], 401);
+        } else {
+        $contact =  Contact::all()
+                            ->where('id',$id)
+                            ->where('user_id',Auth::user()->id)
+                            ->first();
+        if(!$contact) return response()->json(['error' => 'Contact not found!'], 401);
         $contact->update($request->all());
+        return response()->json(['success' => 'Contact updated'], 201);
+
+    }
     }
 
     public function destroy($id)
