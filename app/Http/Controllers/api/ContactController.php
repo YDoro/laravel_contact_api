@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Contact;
 use Validator;
 use GuzzleHttp\Client;
-// use GuzzleHttp\Psr7\Request;
 
 class ContactController extends Controller
 {
