@@ -13,3 +13,4 @@ Route::post('details', 'api\UserController@details');
 });
 //-----------------------------
 Route::resource('contacts', 'api\ContactController')->middleware('auth:api');
+Route::post('contacts/search', 'api\ContactController@search')->middleware('auth:api');

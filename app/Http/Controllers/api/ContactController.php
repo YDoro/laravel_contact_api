@@ -23,21 +23,22 @@ class ContactController extends Controller
         }
         return true;
     }
-    public function alreadyRegistered($userID,$phone,$email){
+    public function alreadyRegistered($userID, $phone, $email)
+    {
         $contactPhone =
-        Contact::all()
+            Contact::all()
             ->where('user_id', $userID)
-            ->where('phone',$phone)
+            ->where('phone', $phone)
             ->count();
-        if($contactPhone>0) return [true,'You already have a contact with this phone number'];
+        if ($contactPhone > 0) return [true, 'You already have a contact with this phone number'];
         $contactEmail =
-        Contact::all()
+            Contact::all()
             ->where('user_id', $userID)
-            ->where('email',$email)
+            ->where('email', $email)
             ->count();
-        if($contactEmail>0) return [true,'You already have a contact with this email'];
+        if ($contactEmail > 0) return [true, 'You already have a contact with this email'];
 
-        return [false,'Success'];
+        return [false, 'Success'];
     }
     public function index()
     {
@@ -61,8 +62,8 @@ class ContactController extends Controller
         if (!self::CEPValidator($request->input('CEP'))) {
             return response()->json(['error' => 'invalid CEP'], 401);
         } else {
-            $registered = self::alreadyRegistered(Auth::user()->id,request('phone'),request('email'));
-            if($registered[0]){
+            $registered = self::alreadyRegistered(Auth::user()->id, request('phone'), request('email'));
+            if ($registered[0]) {
                 return response()->json(['error' => $registered[1]], 401);
             }
             Contact::create([
@@ -81,9 +82,9 @@ class ContactController extends Controller
     public function show($id)
     {
         $contact =  Contact::all()
-                            ->where('id',$id)
-                            ->where('user_id',Auth::user()->id)
-                            ->first();
+            ->where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
         return $contact;
     }
 
@@ -105,24 +106,34 @@ class ContactController extends Controller
         if (!self::CEPValidator($request->input('CEP'))) {
             return response()->json(['error' => 'invalid CEP'], 401);
         } else {
-        $contact =  Contact::all()
-                            ->where('id',$id)
-                            ->where('user_id',Auth::user()->id)
-                            ->first();
-        if(!$contact) return response()->json(['error' => 'Contact not found!'], 401);
-        $contact->update($request->all());
-        return response()->json(['success' => 'Contact updated'], 201);
-
-    }
+            $user = Auth::user();
+            $contact = $user->contacts()
+                ->where('id', $id)
+                ->first();
+            if (!$contact) return response()->json(['error' => 'Contact not found!'], 401);
+            $contact->update($request->all());
+            return response()->json(['success' => 'Contact updated'], 201);
+        }
     }
 
     public function destroy($id)
     {
-        $contact =  Contact::all()
-                            ->where('id',$id)
-                            ->where('user_id',Auth::user()->id)
-                            ->first();
-        if(!$contact)return response()->json(['error' => 'Contact not found!'], 401);
+        $user = Auth::user();
+        $contact =  $user->contacts()
+            ->where('id', $id)
+            ->first();
+        if (!$contact) return response()->json(['error' => 'Contact not found!'], 401);
         $contact->delete();
+    }
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+        $contacts =  $user->contacts()
+                                ->where('name', 'like', '%'. request('query') . '%')
+                                ->orWhere('address', 'like', '%'. request('query') . '%')
+                                ->orWhere('email', 'like', '%'. request('query') . '%')
+                                ->get();
+
+        return response()->json(['contacts' => $contacts], 201);
     }
 }
