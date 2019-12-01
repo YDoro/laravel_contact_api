@@ -134,6 +134,6 @@ class ContactController extends Controller
                                 ->orWhere('email', 'like', '%'. request('query') . '%')
                                 ->get();
 
-        return response()->json(['contacts' => $contacts], 201);
+        return response()->json(['contactx' => $contacts], 201);
     }
 }
