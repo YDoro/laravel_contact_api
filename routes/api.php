@@ -14,6 +14,7 @@ Route::post('details', 'api\UserController@details');
 //-----------------------------
 Route::post('search', 'api\ContactController@search')->middleware('auth:api');
 Route::post('contacts', 'api\ContactController@store')->middleware('auth:api');
+Route::post('contacts/create', 'api\ContactController@store')->middleware('auth:api');
 Route::delete('contacts/{id}', 'api\ContactController@destroy')->middleware('auth:api');
 Route::get('contacts', 'api\ContactController@index')->middleware('auth:api');
 Route::get('contacts/{id}', 'api\ContactController@show')->middleware('auth:api');
