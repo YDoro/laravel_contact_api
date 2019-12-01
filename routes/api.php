@@ -12,5 +12,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::post('details', 'api\UserController@details');
 });
 //-----------------------------
-Route::resource('contacts', 'api\ContactController')->middleware('auth:api');
 Route::post('search', 'api\ContactController@search')->middleware('auth:api');
+Route::post('contacts', 'api\ContactController@store')->middleware('auth:api');
+Route::delete('contacts/{id}', 'api\ContactController@destroy')->middleware('auth:api');
+Route::get('contacts', 'api\ContactController@index')->middleware('auth:api');
+Route::get('contacts/{id}', 'api\ContactController@show')->middleware('auth:api');
+Route::put('contacts/{id}', 'api\ContactController@update')->middleware('auth:api');

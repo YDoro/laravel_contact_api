@@ -43,7 +43,7 @@ class ContactController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return response()->json(['contact_list' => $user->contacts], 200);
+        return response()->json(['contacts' => $user->contacts], 200);
     }
 
     public function store(Request $request)
