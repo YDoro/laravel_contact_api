@@ -43,7 +43,9 @@ class ContactController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return response()->json(['contacts' => $user->contacts], 200);
+        $contacts = $user->contacts()->orderBy('name')->get();
+
+        return response()->json(['contacts' => $contacts], 200);
     }
 
     public function store(Request $request)
@@ -81,10 +83,8 @@ class ContactController extends Controller
 
     public function show($id)
     {
-        $contact =  Contact::all()
-            ->where('id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->first();
+        $user = Auth::user();
+        $contact = $user->contacts()->where('id', $id)->first()->get();
         return $contact;
     }
 
