@@ -96,7 +96,7 @@ class ContactController extends Controller
             'name' => 'required|between:6,60',
             'email' => 'nullable|email',
             'address' => 'nullable',
-            'CEP' => 'size:10',
+            'CEP' => 'size:9',
             'phone' => 'min:14|max:15'
         ]);
 
