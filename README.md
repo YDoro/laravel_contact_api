@@ -88,3 +88,13 @@
 >>Headers:
 >>>Accept : application/json,\
 >>>Authorization :Bearer $your_access_Token,\
+> #### Search
+>>Method: Post \
+>>Endpoint: /api/search  \
+>>Headers:
+>>>Accept : application/json,\
+>>>Authorization :Bearer $your_access_Token,\
+>>Body:
+>>>{\
+>>>"query":"Contact name or contact email or contact phone or contact address",\
+>>>}
