@@ -84,8 +84,11 @@ class ContactController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $contact = $user->contacts()->where('id', $id)->first()->get();
-        return $contact;
+        $contact = $user->contacts()->where('id', $id)->first();
+        if($contact)
+            return $contact;
+        return response()->json(['error' => 'Contact not found'], 401);
+
     }
 
 

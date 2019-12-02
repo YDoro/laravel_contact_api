@@ -18,5 +18,4 @@ Route::post('contacts/create', 'api\ContactController@store')->middleware('auth:
 Route::delete('contacts/{id}', 'api\ContactController@destroy')->middleware('auth:api');
 Route::get('contacts', 'api\ContactController@index')->middleware('auth:api');
 Route::get('contacts/{id}', 'api\ContactController@show')->middleware('auth:api');
-Route::get('contacts/show/{id}', 'api\ContactController@show')->middleware('auth:api');
 Route::put('contacts/{id}', 'api\ContactController@update')->middleware('auth:api');
